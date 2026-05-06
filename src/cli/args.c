@@ -50,13 +50,27 @@ void parse_config(int argc, char** argv, Config* cfg) {
 
 		// Saves the value for sigma_s
         else if (strcmp(argv[i], "--sigma_s") == 0) {
-            cfg->sigma_s = atof(argv[++i]);
+            float value = atof(argv[++i]);
+			
+			if(value < 0 || value == 0) {
+				printf("Invalid sigma_s value\n");
+				exit(1);	
+			} else {
+				cfg->sigma_s = value;
+			}
         }
 
 		// Saves the value for sigma_t
         else if (strcmp(argv[i], "--sigma_t") == 0) {
-            cfg->sigma_t = atof(argv[++i]);
-        }
+			float value = atof(argv[++i]);
+	
+			if(value < 0 || value == 0) {
+				printf("Invalid sigma_t value\n");
+				exit(1);	
+			} else {
+				cfg->sigma_t = value;
+			}
+		}
 		 
 		// Exits if an unknown argument is found
 		else {
