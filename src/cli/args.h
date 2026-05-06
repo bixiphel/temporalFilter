@@ -3,16 +3,19 @@
 
 typedef struct
 {
-	// File names
-	char input_file[256];	// String represention of the input file's name
-	char output_file[256];	// String rep. of the output file's name
+    // File names
+    char input_file[256];	// String represention of the input file's name
+    char output_file[256];	// String rep. of the output file's name
 
-	// Filter name
-	char filter[256];	// Name of the filter used
-	
-	// Filter parameters
-	float sigma_s;		// Spatial spread for Spatiotemporal Gaussian Filter
-	float sigma_t;		// Temporal spread for Spatiotemporal Gaussian Filter
+    // Filter name
+    char filter[256];	// Name of the filter used
+
+    // Radius of filter
+    int radius;
+
+    // Filter parameters
+    float sigma_s;		// Spatial spread for Spatiotemporal Gaussian Filter
+    float sigma_t;		// Temporal spread for Spatiotemporal Gaussian Filter
 
 } Config;
 
