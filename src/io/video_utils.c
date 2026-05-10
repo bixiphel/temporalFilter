@@ -10,7 +10,7 @@ void extract_frames(char* input_file) {
     sprintf(
         command,                                        // Stores the command in the buffer 'command'
         "mkdir -p temp/frames &&"                       // Creates a folder 'temp' to hold the individual frames
-        "ffmpeg -i %s  temp/frames/output-%%06d.ppm",     // Converts each frame into PPM and names each frame as 'output<frame number>.ppm'
+        "ffmpeg -i %s  temp/frames/output-%%06d.pgm",     // Converts each frame into PPM and names each frame as 'output<frame number>.pgm'
         input_file
     );
 
