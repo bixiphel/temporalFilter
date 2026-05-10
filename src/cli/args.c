@@ -82,9 +82,6 @@ void parse_config(int argc, char** argv, Config* cfg) {
             if(value < 0 || value == 0) {
                 printf("Invalid radius value\n");
                 exit(1);
-            } else if(value % 2 == 0) {
-                printf("Kernel radii work better with odd numbers greater than 1 (ex: 3, 5, 7)\n");
-                exit(1);
             } else {
                 cfg->radius = value;
             }
