@@ -40,7 +40,7 @@ Frame* readPGM(const char* filename) {
 
     // Copies the PGM data into the Frame object
     fread(frame->data, 1, width*height, fp);
-    fclose(fp)
+    fclose(fp);
 
     return frame;
 }
@@ -57,8 +57,8 @@ int writePGM(const char* filename, Frame* frame) {
 
     // Prints the information from the Frame into the specified PGM
     fprintf(fp, "P5\n");                    // Magic number
-    fprintf(fp, "%d %d\n", width, height);  // Width and height information
-    fprintf(fp, "%d\n", maxval);            // Maximun intensity value
+    fprintf(fp, "%d %d\n", frame->width, frame->height);  // Width and height information
+    fprintf(fp, "255\n");            // Maximun intensity value
 
     fwrite(frame->data, 1, frame->width * frame->height, fp);
     

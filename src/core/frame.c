@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "frame.h"
 
 Frame* createFrame(int width, int height) {

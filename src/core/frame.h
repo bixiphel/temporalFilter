@@ -6,7 +6,7 @@ typedef struct {
     int width;
     int height;
 
-    unsigned char data*;
+    unsigned char* data;
 } Frame;
 
 /* Functions related to frame objects */

@@ -40,7 +40,7 @@ void parse_config(int argc, char** argv, Config* cfg) {
     strcpy(cfg->input_file, argv[1]);
 
     // Saves the name of the output file if given
-    if (argc >= 3 && argv[2][0] != '-') {
+    if (argv[2][0] != '-') {
         strcpy(cfg->output_file, argv[2]);
     }
 
