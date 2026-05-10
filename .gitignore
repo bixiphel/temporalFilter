@@ -1,1 +1,5 @@
 *.mkv
+datasets/*
+*.out
+*.ppm
+Makefile
