@@ -38,9 +38,12 @@ FrameSequence* loadSequence(const char* directory)
                 sizeof(char*) * (seq->count + 1)
             );
 
-            seq->filenames[seq->count] =
-                strdup(entry->d_name);
+            char fullpath[512];
+            
+            sprintf(fullpath, "%s/%s", directory, entry->d_name);
 
+            seq->filenames[seq->count] = strdup(fullpath);
+            
             seq->count++;
         }
     }
