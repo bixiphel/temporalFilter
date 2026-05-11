@@ -30,36 +30,91 @@ int main(int argc, char** argv) {
     // Extract the frames
     extract_frames(cfg.input_file);	
 
+    // Load the frames into a FrameSequence object
+    FrameSequence* sequence = loadSequence("../temp/frames");
+
 
     /* Spatiotemporal Filtering */
-    Frame* input = readPGM(
-        "../temp/frames/output_000001.pgm"
-    );
 
-    Frame* temp = createFrame(
-        input->width,
-        input->height
-    );
+    // Create the kernels based on hte sigma values specified by the user
+    Kernel* spatial = createKernel(cfg.sigma_s, cfg.radius);
+    Kernel* temporal = createKernel(cfg.sigma_t, cfg.radius);
 
-    Frame* output = createFrame(
-        input->width,
-        input->height
-    );
 
-    Kernel* kernel =
-        createKernel(2.0f, 3);
+    // Create the buffer used for the temporal gaussian 
+    TemporalBuffer* buffer = createBuffer(cfg.radius);
+     
+    // Preload the buffer with the first (radius)-th frames that are within the radius
+    for(int i = 0; i < buffer->size; i++) {
+        // Read in the i-th frame in the sequence
+        Frame* raw = readPGM(sequence->filenames[i]);
 
-    gauss_x(input, temp, kernel);
+        // Create temporary blank frames
+        Frame* temp = createFrame(raw->width, raw->height);
+        Frame* filtered = createFrame(raw->width, raw->height);
 
-    gauss_y(temp, output, kernel);
+        // Apply spatial filtering on the i-th frame
+        gauss_x(raw, temp, spatial);
+        gauss_y(temp, filtered, spatial);
 
-    writePGM("output.pgm", output);
+        // Add the filtered frame to the buffer
+        buffer->frames[i] = filtered;
+        
+        // Deallocate the temporary frames
+        destroyFrame(raw);
+        destroyFrame(temp);
+    }
+   
 
-    destroyFrame(input);
-    destroyFrame(temp);
-    destroyFrame(output);
+    /* Main processing loop */
+    for(int t = cfg.radius; t < sequence->count - cfg.radius; t++) {
+        // Debug statement
+        printf("Processing frame %d\n", t);
 
-    destroyKernel(kernel);
+        // Apply the temporal gaussian on frames within the buffer
+        Frame* output = createFrame(buffer->frames[0]->width, buffer->frames[0]->height);
+        gauss_t(buffer, output, temporal);
+
+        // Write to the resulting PGM file
+        char filename[256];
+        sprintf(filename, "../temp/output/out_%06d.pgm",t);
+        
+        writePGM(filename, output);
+
+        destroyFrame(output);
+
+        // Slide the buffer to the next frame
+        shiftBuffer(buffer);
+
+        // Load the next frame into the buffer
+        int next = t + cfg.radius + 1;
+        if(next < sequence->count) {
+            Frame* raw = readPGM(sequence->filenames[next]);
+    
+            Frame* temp = createFrame(raw->width, raw->height);
+            Frame* filtered = createFrame(raw->width, raw->height);
+
+            // Spatial filtering 
+            gauss_x(raw, temp, spatial);
+            gauss_y(temp, filtered, spatial);
+
+            // Put the filtered frame into the buffer
+            buffer->frames[buffer->size - 1] = filtered;
+
+            // Cleanup
+            destroyFrame(raw);
+            destroyFrame(temp);
+        }
+
+    }
+
+    /* Cleanup */
+
+    destroyBuffer(buffer);
+    destroyKernel(spatial);
+    destroyKernel(temporal);
+    destroySequence(sequence);
+    printf("Processing complete\n");
 
     return 0;    
 
