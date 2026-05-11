@@ -33,12 +33,13 @@ int main(int argc, char** argv) {
 	// Print configurations
 	print_config(&cfg);
 
-    
+    // Determine fps value
+    extract_fps(&cfg);
+ 
     /* Frame Extraction */
 
-
     // Extract the frames
-    extract_frames(cfg.input_file);	
+    extract_frames(&cfg);	
 
     // Load the frames into a FrameSequence object
     FrameSequence* sequence = loadSequence("temp/frames");
@@ -125,6 +126,10 @@ int main(int argc, char** argv) {
     destroyKernel(temporal);
     destroySequence(sequence);
     printf("Processing complete\n");
+
+
+    /* Create video from processed frames */
+    assemble_video(&cfg);
 
     return 0;    
 
