@@ -40,12 +40,15 @@ void parse_config(int argc, char** argv, Config* cfg) {
     strcpy(cfg->input_file, argv[1]);
 
     // Saves the name of the output file if given
-    if (argv[2][0] != '-') {
+    int arg_start = 2;      // This is used to determine where the flags start depending on if an output file is specified
+
+    if (argc > 2 && argv[2][0] != '-') {
         strcpy(cfg->output_file, argv[2]);
+        arg_start = 3;
     }
 
     // Processes the remaining arguments 
-    for (int i = 3; i < argc; i++) {
+    for (int i = arg_start; i < argc; i++) {
         // Saves the filter name
         if (strcmp(argv[i], "--filter") == 0) {
             strcpy(cfg->filter, argv[++i]);
@@ -53,6 +56,12 @@ void parse_config(int argc, char** argv, Config* cfg) {
 
         // Saves the value for sigma_s
         else if (strcmp(argv[i], "--sigma_s") == 0) {
+            // Checks if a value for sigma_s is given
+            if (i + 1 >= argc) {
+                printf("Missing sigma_s value\n");
+                exit(1);
+            }
+
             float value = atof(argv[++i]);
 
             if(value < 0 || value == 0) {
@@ -65,6 +74,12 @@ void parse_config(int argc, char** argv, Config* cfg) {
 
         // Saves the value for sigma_t
         else if (strcmp(argv[i], "--sigma_t") == 0) {
+            // Checks if a value for sigma_t is given
+            if (i + 1 >= argc) {
+                printf("Missing sigma_t value\n");
+                exit(1);
+            }
+                
             float value = atof(argv[++i]);
 
             if(value < 0 || value == 0) {
@@ -77,6 +92,12 @@ void parse_config(int argc, char** argv, Config* cfg) {
 
         // Saves the radius
         else if (strcmp(argv[i], "--radius") == 0) {
+            // Checks if a value for the radius is given
+            if (i + 1 >= argc) {
+                printf("Radius value\n");
+                exit(1);
+            }
+
             int value = atoi(argv[++i]);
 
             if(value < 0 || value == 0) {
