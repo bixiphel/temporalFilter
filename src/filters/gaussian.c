@@ -35,7 +35,9 @@ void gauss_x(Frame* input, Frame* output, Kernel* kernel) {
             }
             
             // Writes to the output Frame
-            output->data[y*width + x] = (unsigned char) sum;        
+            float val = sum;
+            val = fminf(fmaxf(val, 0.0f), 255.0f);
+            output->data[y*width + x] = (unsigned char)(val + 0.5f);        
         }
     }
 }
@@ -59,7 +61,9 @@ void gauss_y(Frame* input, Frame* output, Kernel* kernel) {
             }
             
             // Writes to the output Frame
-            output->data[y*width + x] = (unsigned char) sum;
+            float val = sum;
+            val = fminf(fmaxf(val, 0.0f), 255.0f);
+            output->data[y*width + x] = (unsigned char)(val + 0.5f);
         }
     }
 }
@@ -82,9 +86,11 @@ void gauss_t(TemporalBuffer* buffer, Frame* output, Kernel* kernel) {
                 
                 sum += kernel->weights[k] * frame->data[y*width + x];
             }
-            
-            // Writes to the output
-            output->data[y*width + x] = (unsigned char) sum;
+           
+            // Writes to the output Frame
+            float val = sum;
+            val = fminf(fmaxf(val, 0.0f), 255.0f);
+            output->data[y*width + x] = (unsigned char)(val + 0.5f);   
         }
     }
 }
