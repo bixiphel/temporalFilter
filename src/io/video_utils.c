@@ -73,9 +73,11 @@ void assemble_video(Config* cfg) {
     snprintf(
         command,
         sizeof(command),
-        "ffmpeg -framerate %.3f "
+        "ffmpeg -start_number %d" 
+        " -framerate %.3f "
         "-i temp/output/out_%%06d.pgm "
         "-c:v libx264 -pix_fmt yuv420p %s",
+        cfg->radius,
         cfg->fps,
         cfg->output_file
     );
