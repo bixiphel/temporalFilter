@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 
 #include "cli/args.h"
@@ -130,6 +131,9 @@ int main(int argc, char** argv) {
 
     /* Create video from processed frames */
     assemble_video(&cfg);
+
+    /* Temporary file cleanup */
+    system("rm -r temp");
 
     return 0;    
 
