@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sys/stat.h>
 
 #include "cli/args.h"
 #include "io/frame_sequence.h"
@@ -9,6 +10,15 @@
 #include "filters/gaussian.h"
 
 int main(int argc, char** argv) {
+
+    /* Setup */
+    
+    // Create the necessary directories for images
+    mkdir("temp", 0755);            // Directory containing extracted frames, processed frames, and output
+    mkdir("temp/frames", 0755);     // Directory containing extracted frames
+    mkdir("temp/output", 0755);     // Directory containing processed frames
+
+
 	Config cfg;
 
     /* CLI; process input */
@@ -31,7 +41,7 @@ int main(int argc, char** argv) {
     extract_frames(cfg.input_file);	
 
     // Load the frames into a FrameSequence object
-    FrameSequence* sequence = loadSequence("../temp/frames");
+    FrameSequence* sequence = loadSequence("temp/frames");
 
 
     /* Spatiotemporal Filtering */
@@ -77,7 +87,7 @@ int main(int argc, char** argv) {
 
         // Write to the resulting PGM file
         char filename[256];
-        sprintf(filename, "../temp/output/out_%06d.pgm",t);
+        sprintf(filename, "temp/output/out_%06d.pgm",t);
         
         writePGM(filename, output);
 
