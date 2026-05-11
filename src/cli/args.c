@@ -15,6 +15,9 @@ void init_config(Config* cfg) {
 
     // Radius size
     cfg->radius = 1;
+    
+    // FPS
+    cfg->fps = 30.0f;
 
     // Filter parameters
     cfg->sigma_s = 1.0f;

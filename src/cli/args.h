@@ -7,6 +7,8 @@ typedef struct
     char input_file[256];	// String represention of the input file's name
     char output_file[256];	// String rep. of the output file's name
 
+    float fps;          // The frames per second of the input video
+
     // Filter name
     char filter[256];	// Name of the filter used
 
