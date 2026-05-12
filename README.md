@@ -12,7 +12,7 @@ This project performs Gaussian smoothing common video files (mp4, avi, mkv, etc.
 
 # Running the Program
 ## Compile
-- Run the make file to compile all files:
+- Run the make file to compile all files. The resulting executable is `stfilter`
 ```
 make
 ```
@@ -23,3 +23,12 @@ make
 make clean
 ```
 
+## Filtering Videos
+- All execution instructions follow the form:
+```
+./stfilter <args>
+```
+- The following lists all parameters and arguments:
+```
+./stfilter --help
+```
